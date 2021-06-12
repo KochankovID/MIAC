@@ -1,0 +1,46 @@
+name: mypy
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    env:
+      working-directory: ./
+      flake-report-dir: flake-report
+      mypy-report-dir: mypy-report
+    
+    strategy:
+      matrix:
+        python-version: [3.9]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        working-directory: ${{env.working-directory}}
+        run: |
+          python -m pip install --upgrade pip
+          pip install mypy lxml
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Lint with mypy
+        run: |
+          # run mypy type checking
+          mypy ${{env.working-directory}} --html-report=${{env.mypy-report-dir}}
+
+      - name: Upload mypy results
+        uses: actions/upload-artifact@v2
+        with:
+          name: mypy-results-${{ matrix.python-version }}
+          path: ${{env.mypy-report-dir}}/*
+        # Use always() to always run this step to publish test results when there are test failures
+        if: ${{ always() }}
