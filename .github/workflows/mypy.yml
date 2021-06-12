@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     env:
-      working-directory: ./
+      working-directory: ./miac
       flake-report-dir: flake-report
       mypy-report-dir: mypy-report
     
