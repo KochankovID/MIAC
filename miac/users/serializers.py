@@ -1,6 +1,5 @@
 import django.contrib.auth.password_validation as validators
 from django.core import exceptions
-
 from phonenumber_field.serializerfields import PhoneNumberField
 from rest_framework import serializers
 
