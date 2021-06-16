@@ -16,17 +16,16 @@ class RegisterSerializer(serializers.Serializer):
     last_name = serializers.CharField(required=True, max_length=255)
 
     def validate(self, data):
-        if data['password1'] != data['password2']:
-            raise serializers.ValidationError(
-                "The two password fields didn't match.")
+        if data["password1"] != data["password2"]:
+            raise serializers.ValidationError("The two password fields didn't match.")
 
-        password = data.get('password1')
+        password = data.get("password1")
 
         errors = dict()
         try:
             validators.validate_password(password=password, user=User)
         except exceptions.ValidationError as e:
-            errors['password'] = list(e.messages)
+            errors["password"] = list(e.messages)
 
         if errors:
             raise serializers.ValidationError(errors)
@@ -35,11 +34,11 @@ class RegisterSerializer(serializers.Serializer):
 
     def get_cleaned_data(self):
         return {
-            'username': self.validated_data.get('username', ''),
-            'password': self.validated_data.get('password1', ''),
-            'email': self.validated_data.get('email', ''),
-            'first_name': self.validated_data.get('first_name', ''),
-            'last_name': self.validated_data.get('last_name', ''),
+            "username": self.validated_data.get("username", ""),
+            "password": self.validated_data.get("password1", ""),
+            "email": self.validated_data.get("email", ""),
+            "first_name": self.validated_data.get("first_name", ""),
+            "last_name": self.validated_data.get("last_name", ""),
         }
 
     def save(self, request):
