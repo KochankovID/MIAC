@@ -6,7 +6,12 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, username, email, first_name, last_name, password=None):
+    def create_user(self,
+                    username,
+                    email,
+                    first_name,
+                    last_name,
+                    password=None):
         """ Создает и возвращает пользователя с имэйлом, паролем и именем. """
         if username is None:
             raise TypeError("Users must have a username.")
@@ -31,12 +36,14 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, username, email, first_name, last_name, password):
+    def create_superuser(self, username, email, first_name, last_name,
+                         password):
         """ Создает и возввращет пользователя с привилегиями суперадмина. """
         if password is None:
             raise TypeError("Superusers must have a password.")
 
-        user = self.create_user(username, email, first_name, last_name, password)
+        user = self.create_user(username, email, first_name, last_name,
+                                password)
         user.is_superuser = True
         user.is_staff = True
         user.save()

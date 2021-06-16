@@ -19,7 +19,6 @@ schema_view = get_schema_view(
     permission_classes=[permissions.AllowAny],
 )
 
-
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/auth/", include("dj_rest_auth.urls")),
@@ -34,7 +33,7 @@ urlpatterns = [
         schema_view.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
-    url(
-        r"^redoc/$", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"
-    ),
+    url(r"^redoc/$",
+        schema_view.with_ui("redoc", cache_timeout=0),
+        name="schema-redoc"),
 ]
