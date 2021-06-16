@@ -15,15 +15,16 @@
 ## How to run docker-compose
 
 1. Create .env file in docker-compose directory (one can rename .env.example)
-2. Fill .env file with the following variables (you don't need to do in explicitly if you use .env.example):
-   * `SECRET_KEY` = django secret key
-   * `DEBUG` = enable or disable debug in django
-   * `REDIS_URL` = url for connection to redis (django cache)
-   * `REDIS_SESSION_URL` = url for connection to redis (django sessions cache)
-   * `DATABASE_URL` = url for connection to postgresql
-   * `DB_NAME` = database name
-   * `DB_USER` = database username
-   * `DB_PASSWORD` = database password
-   * `DB_PORT` = port of the database in your local network
-   * `REDIS_PORTS` = port of the redis in your local network
+2. Fill .env file with the following variables (you don't need to do in
+   explicitly if you use .env.example):
+   - `SECRET_KEY` = django secret key
+   - `DEBUG` = enable or disable debug in django
+   - `REDIS_URL` = url for connection to redis (django cache)
+   - `REDIS_SESSION_URL` = url for connection to redis (django sessions cache)
+   - `DATABASE_URL` = url for connection to postgresql
+   - `DB_NAME` = database name
+   - `DB_USER` = database username
+   - `DB_PASSWORD` = database password
+   - `DB_PORT` = port of the database in your local network
+   - `REDIS_PORTS` = port of the redis in your local network
 3. Run `docker-compose up` in the root repository folder
