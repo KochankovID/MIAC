@@ -1,0 +1,63 @@
+version: "3.9"
+services:
+  db:
+    image: "postgres:latest"
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db_data:/var/lib/comparing/data
+    ports:
+      - "${DB_PORT}:5432"
+    networks:
+      - miac
+
+  redis:
+    image: "redis:latest"
+    volumes:
+      - redis_data:/data
+    ports:
+      - "${REDIS_PORTS}:6379"
+    networks:
+      - miac
+
+  django:
+    build: ./miac/
+    volumes:
+      - ../movies_admin/static:/movies_admin/static
+    depends_on:
+      - db
+      - redis
+    expose:
+      - "8000"
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DEBUG=${DEBUG}
+      - REDIS_URL=${REDIS_URL}
+      - REDIS_SESSION_URL=${REDIS_SESSION_URL}
+      - DATABASE_URL=${DATABASE_URL}
+    networks:
+      - miac
+
+  nginx:
+    image: "nginx:stable-alpine"
+    ports:
+      - 80:80
+    volumes:
+      - ./etc/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./etc/nginx/conf.d:/etc/nginx/conf.d
+      - ./miac/static:/data/static
+    depends_on:
+      - django
+    networks:
+      - miac
+
+networks:
+  miac:
+    driver: bridge
+    name: miac
+
+volumes:
+  db_data:
+  redis_data:
