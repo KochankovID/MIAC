@@ -11,8 +11,9 @@ class UserManager(BaseUserManager):
                     email,
                     first_name,
                     last_name,
+                    role,
                     password=None):
-        """ Создает и возвращает пользователя с имэйлом, паролем и именем. """
+
         if username is None:
             raise TypeError("Users must have a username.")
 
@@ -30,6 +31,7 @@ class UserManager(BaseUserManager):
             email=self.normalize_email(email),
             first_name=first_name,
             last_name=last_name,
+            role=role,
         )
         user.set_password(password)
         user.save()
@@ -38,11 +40,10 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, username, email, first_name, last_name,
                          password):
-        """ Создает и возввращет пользователя с привилегиями суперадмина. """
         if password is None:
             raise TypeError("Superusers must have a password.")
 
-        user = self.create_user(username, email, first_name, last_name,
+        user = self.create_user(username, email, first_name, last_name, 'Admin',
                                 password)
         user.is_superuser = True
         user.is_staff = True
@@ -52,6 +53,12 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    ROLES = (
+        ('Patient', 'Patient'),
+        ('Doctor', 'Doctor'),
+        ('Admin', 'Admin'),
+    )
+
     username = PhoneNumberField(db_index=True, max_length=255, unique=True)
     email = models.EmailField(db_index=True, unique=True)
     first_name = models.CharField(max_length=255)
@@ -60,6 +67,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    role = models.CharField(max_length=50, choices=ROLES, null=True, default='Patient')
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["email", "first_name", "last_name"]

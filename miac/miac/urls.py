@@ -1,3 +1,4 @@
+import debug_toolbar
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import include
@@ -36,4 +37,5 @@ urlpatterns = [
     url(r"^redoc/$",
         schema_view.with_ui("redoc", cache_timeout=0),
         name="schema-redoc"),
+    path('__debug__/', include(debug_toolbar.urls)),
 ]

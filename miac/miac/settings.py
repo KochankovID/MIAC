@@ -15,6 +15,10 @@ DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = []
 
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -23,6 +27,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
+    'django_extensions',
     "rest_framework",
     "rest_framework.authtoken",
     "dj_rest_auth",
@@ -33,6 +38,7 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "drf_yasg",
     "corsheaders",
+    "debug_toolbar",
     "users",
 ]
 
@@ -46,7 +52,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "miac.urls"
@@ -76,19 +83,19 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME":
-        "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+            "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
         "NAME":
-        "django.contrib.auth.password_validation.MinimumLengthValidator",
+            "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
         "NAME":
-        "django.contrib.auth.password_validation.CommonPasswordValidator",
+            "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
         "NAME":
-        "django.contrib.auth.password_validation.NumericPasswordValidator",
+            "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -109,7 +116,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES":
-    ("rest_framework_simplejwt.authentication.JWTAuthentication", )
+        ("rest_framework_simplejwt.authentication.JWTAuthentication",)
 }
 
 AUTH_USER_MODEL = "users.User"
@@ -141,12 +148,12 @@ SIMPLE_JWT = {
     "VERIFYING_KEY": None,
     "AUDIENCE": None,
     "ISSUER": None,
-    "AUTH_HEADER_TYPES": ("Bearer", ),
+    "AUTH_HEADER_TYPES": ("Bearer",),
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "user_id",
     "USER_AUTHENTICATION_RULE":
-    "rest_framework_simplejwt.authentication.default_user_authentication_rule",
+        "rest_framework_simplejwt.authentication.default_user_authentication_rule",
     "TOKEN_TYPE_CLAIM": "token_type",
     "JTI_CLAIM": "jti",
     "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
@@ -164,3 +171,5 @@ SESSION_CACHE_ALIAS = "sessions"
 
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+CORS_ORIGIN_ALLOW_ALL = True
